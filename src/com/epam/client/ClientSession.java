@@ -26,7 +26,8 @@ public class ClientSession implements Runnable {
          String req = header.split(" ")[1];
          Request request = new Request(req);
          System.out.println("REQUEST: " + request.getObject() + " " + request.getObjParam() + " " 
-        		 + request.getCommand() + " " + request.getComParam());
+        		 + request.getCommand() + " " + request.getComParam() + " " + request.getFormat());
+         request.execute();
          String url = getURIFromHeader(header);
          System.out.println("Resource: " + url + "\n");
          /* Отправляем содержимое ресурса клиенту */

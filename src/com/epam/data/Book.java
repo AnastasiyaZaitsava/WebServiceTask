@@ -13,5 +13,15 @@ public class Book {
 		this.author = auth;
 	}
 	
+	public int getID(){
+		return id;
+	}
+	
+	public String getName(){
+		return name;
+	}
+	public String getAuthor(){
+		return author;
+	}
 
 }

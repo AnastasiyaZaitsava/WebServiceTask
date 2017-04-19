@@ -14,4 +14,12 @@ public class Data {
 	public void addBook(Book book){
 		data.add(book);
 	}
+	
+	public ArrayList<Book> getAllBooks(){
+		return data;
+	}
+	
+	public Book getBook(int id){
+		return data.get(id-1);
+	}
 }
