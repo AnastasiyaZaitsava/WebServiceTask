@@ -3,10 +3,9 @@ DONE
 + reading url
 + parsing url to request
 + print header in responce (found)
-+ create and read requests execution (without making responce)
++ create and read requests execution (with responce creating)
 
 TO DO
 - xml
 - json
-- request execution
-- responce according to request
+- request execution (update, delete)
