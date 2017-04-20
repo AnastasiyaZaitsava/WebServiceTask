@@ -23,5 +23,9 @@ public class Book {
 	public String getAuthor(){
 		return author;
 	}
-
+	
+	public String toString(){
+		String book = "ID: "+ this.id + ";  Name: " + this.name + "; Author: " + this.author + ";\n";
+		return book;
+	}
 }

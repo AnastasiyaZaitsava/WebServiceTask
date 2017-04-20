@@ -10,6 +10,7 @@ import java.net.Socket;
 import java.util.Date;
 import com.epam.httpserver.HttpServer;
 import com.epam.work.Request;
+import com.epam.work.Responce;
 
 /**
  * Обрабатывает запрос клиента.
@@ -27,7 +28,8 @@ public class ClientSession implements Runnable {
          Request request = new Request(req);
          System.out.println("REQUEST: " + request.getObject() + " " + request.getObjParam() + " " 
         		 + request.getCommand() + " " + request.getComParam() + " " + request.getFormat());
-         request.execute();
+         Responce responce = request.execute();
+         System.out.println("RESPONCE: " + responce.getCode() + " " + responce.getMessage() + "\n" + responce.getInfo());
          String url = getURIFromHeader(header);
          System.out.println("Resource: " + url + "\n");
          /* Отправляем содержимое ресурса клиенту */

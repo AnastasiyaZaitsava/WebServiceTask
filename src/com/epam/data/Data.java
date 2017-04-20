@@ -20,6 +20,9 @@ public class Data {
 	}
 	
 	public Book getBook(int id){
-		return data.get(id-1);
+		if(id<=data.size())
+			return data.get(id-1);
+		else
+			return null;
 	}
 }

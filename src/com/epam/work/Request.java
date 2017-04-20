@@ -91,8 +91,7 @@ public class Request {
 	
 	public Responce execute(){
 		Execution ex = new Execution();
-		ex.executeRequest(this);
-		Responce responce = new Responce();
+		Responce responce = ex.executeRequest(this);;
 		return responce;
 	}
 }

@@ -6,28 +6,29 @@ public class Execution {
 	
 	public Execution(){}
 	
-	public void executeRequest(Request request){
+	public Responce executeRequest(Request request){
+		Responce responce = new Responce();
 		switch (request.getCommand()){
 		case "create":
-			createBook(request);
+			responce = createBook(request);
 			break;
 		case "update":
 			updateBook(request);
 			break;
 		case "read":
-			readBook(request);
+			responce = readBook(request);
 			break;
 		case "delete":
 			deleteBook(request);
 			break;
 		default: 
-			System.out.println("No such operation");
+			responce = new Responce(400, "Wrong Request", "");
 			break;
 		}
+		return responce;
 	}
 	
-	public void createBook(Request request){
-		System.out.println("CREATE");
+	public Responce createBook(Request request){
 		int id = request.getData().getAllBooks().size() + 1;
 		String name = "";
 		String author = "";
@@ -41,22 +42,30 @@ public class Execution {
 			}
 		}
 		request.getData().addBook(new Book(id, name, author));
-		System.out.println("CREATED");
+		Responce responce = new Responce(200, "OK", "Book has been created");
+		return responce;
 	}
 	
-	public void readBook(Request request){
+	public Responce readBook(Request request){
 		System.out.println("READ");
+		Responce responce;
 		if(!request.getObjParam().equals("")){
 			Book book = request.getData().getBook(Integer.parseInt(request.getObjParam().substring(3)));
-			System.out.println(book.getName() + " " + book.getAuthor());
-		}
-		else{
-			for(Book book: request.getData().getAllBooks()){
-				System.out.println(book.getName() + " " + book.getAuthor());
+			if(book == null){
+				responce = new Responce(404, "Not found", "Book with that id not found");
+			}
+			else{
+				responce = new Responce(200, "OK", book.toString());
 			}
 		}
-		
-		
+		else{
+			String books = "";
+			for(Book book: request.getData().getAllBooks()){
+				books += book.toString();;
+			}
+			responce = new Responce(200, "OK", books);
+		}
+		return responce;		
 	}
 	
 	public void updateBook(Request request){
