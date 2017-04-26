@@ -1,8 +1,12 @@
 package com.epam.work;
 
+import java.util.ArrayList;
+
 import com.epam.data.Book;
+import com.epam.data.Data;
 
 public class Execution {
+	private ArrayList<Book> data = Data.getData();
 	
 	public Execution(){}
 	
@@ -13,13 +17,13 @@ public class Execution {
 			responce = createBook(request);
 			break;
 		case "update":
-			updateBook(request);
+			responce = updateBook(request);
 			break;
 		case "read":
 			responce = readBook(request);
 			break;
 		case "delete":
-			deleteBook(request);
+			responce = deleteBook(request);
 			break;
 		default: 
 			responce = new Responce(400, "Wrong Request", "");
@@ -29,7 +33,6 @@ public class Execution {
 	}
 	
 	public Responce createBook(Request request){
-		int id = request.getData().getAllBooks().size() + 1;
 		String name = "";
 		String author = "";
 		String[] bookData = request.getComParam().split("&");
@@ -41,8 +44,9 @@ public class Execution {
 				author = field.substring(7);
 			}
 		}
-		request.getData().addBook(new Book(id, name, author));
-		Responce responce = new Responce(200, "OK", "Book has been created");
+		int id = Data.getNewID();
+		Data.addBook(new Book(id, name, author));
+		Responce responce = new Responce(201, "Created", "Book has been created");
 		return responce;
 	}
 	
@@ -50,7 +54,7 @@ public class Execution {
 		System.out.println("READ");
 		Responce responce;
 		if(!request.getObjParam().equals("")){
-			Book book = request.getData().getBook(Integer.parseInt(request.getObjParam().substring(3)));
+			Book book = Data.getBook(request.getBookIDFromReq());
 			if(book == null){
 				responce = new Responce(404, "Not found", "Book with that id not found");
 			}
@@ -60,20 +64,71 @@ public class Execution {
 		}
 		else{
 			String books = "";
-			for(Book book: request.getData().getAllBooks()){
-				books += book.toString();;
+			for(Book book: data){
+				books += book.toString();
 			}
 			responce = new Responce(200, "OK", books);
 		}
 		return responce;		
 	}
 	
-	public void updateBook(Request request){
+	public Responce updateBook(Request request){
 		System.out.println("UPDATE");
+		Book book = Data.getBook(request.getBookIDFromReq());
+		String[] bookData = request.getComParam().split("&");
+		if (book != null){
+			for(String field: bookData){
+				if(field.contains("name")){
+					String newName = field.substring(5);
+					book.setName(newName);
+					
+				}
+				else if(field.contains("author")){
+					String newAuthor = field.substring(7);
+					book.setAuthor(newAuthor);
+					
+				}
+				else if(field.contains("id")){
+					int newID = Integer.parseInt(field.substring(3));
+					book.setID(newID);
+				}
+			}
+			Responce responce = new Responce(200, "OK", "Book has been updated successfully");
+			return responce;
+		}
+		else{
+			Responce responce = new Responce(404, "Not found", "Book with that id not found");
+			return responce;
+		}
+		
 	}
 	
-	public void deleteBook(Request request){
+	public Responce deleteBook(Request request){
 		System.out.println("DELETE");
+		Responce responce;
+		if(!request.getObjParam().equals("")){
+			Book book = Data.getBook(request.getBookIDFromReq());
+			if(book == null){
+				responce = new Responce(404, "Not found", "Book has been already deleted or never existed");
+			}
+			else{
+				if(Data.getAllBooks().remove(book)){
+					responce = new Responce(200, "OK", "Book has been deleted successfully!");
+				}
+				else{
+					responce = new Responce(500, "Internal Server Error", "Something goes wrong :(");
+				}
+			}
+		}
+		else{
+			if(data.removeAll(data)){
+				responce = new Responce(200, "OK", "All books has been deleted");
+			}
+			else{
+				responce = new Responce(500, "Internal Server Error", "Something goes wrong :(");
+			}
+		}
+		return responce;	
 	}
 	
 	

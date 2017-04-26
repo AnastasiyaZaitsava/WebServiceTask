@@ -1,5 +1,8 @@
 package com.epam.work;
 
+import java.util.ArrayList;
+
+import com.epam.data.Book;
 import com.epam.data.Data;
 
 public class Request {
@@ -8,7 +11,6 @@ public class Request {
 	private String command;
 	private String comParam;
 	private String format;
-	public static Data data = new Data();
 	
 	
 	public Request(String req){
@@ -38,10 +40,6 @@ public class Request {
 	
 	public String getFormat(){
 		return this.format;
-	}
-	
-	public Data getData(){
-		return this.data;
 	}
 	
 	public static String[] parseRequest(String req){
@@ -93,5 +91,9 @@ public class Request {
 		Execution ex = new Execution();
 		Responce responce = ex.executeRequest(this);;
 		return responce;
+	}
+	
+	public int getBookIDFromReq(){
+		return Integer.parseInt(this.objParam.substring(3));
 	}
 }

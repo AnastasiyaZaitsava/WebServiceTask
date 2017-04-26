@@ -24,6 +24,17 @@ public class Book {
 		return author;
 	}
 	
+	public void setID(int id){
+		this.id = id;
+	}
+	
+	public void setName(String name){
+		this.name = name;
+	}
+	public void setAuthor(String author){
+		this.author = author;
+	}
+	
 	public String toString(){
 		String book = "ID: "+ this.id + ";  Name: " + this.name + "; Author: " + this.author + ";\n";
 		return book;

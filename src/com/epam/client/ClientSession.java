@@ -22,19 +22,21 @@ public class ClientSession implements Runnable {
       try {
          /* Получаем заголовок сообщения от клиента */
          String header = readHeader();         
-         System.out.println("Header:" + header + "\n");
-         /* Получаем из заголовка указатель на интересующий ресурс */
-         String req = header.split(" ")[1];
-         Request request = new Request(req);
-         System.out.println("REQUEST: " + request.getObject() + " " + request.getObjParam() + " " 
-        		 + request.getCommand() + " " + request.getComParam() + " " + request.getFormat());
-         Responce responce = request.execute();
-         System.out.println("RESPONCE: " + responce.getCode() + " " + responce.getMessage() + "\n" + responce.getInfo());
-         String url = getURIFromHeader(header);
-         System.out.println("Resource: " + url + "\n");
-         /* Отправляем содержимое ресурса клиенту */
-         int code = send(url);
-         System.out.println("Result code: " + code + "\n");
+         if(!header.equals("")){
+	         System.out.println("Header:" + header + "\n");
+	         /* Получаем из заголовка указатель на интересующий ресурс */ 
+	         String req = header.split(" ")[1];
+	         Request request = new Request(req);
+	         System.out.println("REQUEST: " + request.getObject() + " " + request.getObjParam() + " " 
+	        		 + request.getCommand() + " " + request.getComParam() + " " + request.getFormat());
+	         Responce responce = request.execute();
+	         System.out.println("RESPONCE: " + responce.getCode() + " " + responce.getMessage() + "\n" + responce.getInfo());
+	         String url = getURIFromHeader(header);
+	         System.out.println("Resource: " + url + "\n");
+	         /* Отправляем содержимое ресурса клиенту */
+	         int code = send(url);
+	         System.out.println("Result code: " + code + "\n");
+         }
       } catch (IOException e) {
          e.printStackTrace();
       } finally {
